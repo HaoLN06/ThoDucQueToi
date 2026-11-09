@@ -37,4 +37,21 @@ describe('SaveService', () => {
     expect(saves.reset()).toEqual(createInitialState());
     expect(storage.getItem(SAVE_KEY)).toBeNull();
   });
+
+  it('migrate save Sprint 01 và giữ nguyên tiến trình nhiệm vụ', () => {
+    const storage = new MemoryStorage();
+    const saves = new SaveService(storage);
+    storage.setItem(SAVE_KEY, JSON.stringify({
+      schemaVersion: 1,
+      player: { mapId: 'placeholder_village', x: 430, y: 270 },
+      activeEra: 'present',
+      quest: { guideSpoken: true, visitedLocations: ['dinh_tho_duc'], portalUsed: false, completed: false },
+      discoveredLocations: ['dinh_tho_duc'], started: true,
+    }));
+    const migrated = saves.load();
+    expect(migrated?.schemaVersion).toBe(2);
+    expect(migrated?.player.mapId).toBe('tho_duc_geographic_v1');
+    expect(migrated?.quest.visitedLocations).toEqual(['dinh_tho_duc']);
+    expect(migrated?.navigationTarget).toBeNull();
+  });
 });

@@ -11,6 +11,7 @@ export interface GameEventMap {
   prompt: string | null;
   interaction: InteractionTarget;
   notice: string;
+  player: GameState['player'];
 }
 
 export type GameCommand =

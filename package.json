@@ -16,6 +16,9 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "screenshots": "node scripts/capture-screenshots.mjs",
+    "map:build": "node scripts/build-game-map.mjs",
+    "map:validate": "node scripts/validate-geodata.mjs",
+    "prebuild": "npm run map:build && npm run map:validate",
     "check": "npm run typecheck && npm run lint && npm run test && npm run build"
   },
   "dependencies": {

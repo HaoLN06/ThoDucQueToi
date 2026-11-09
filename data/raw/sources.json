@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-11-09",
+  "sources": [
+    {
+      "id": "osm-map-api",
+      "title": "OpenStreetMap Map API extract",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=106.018,21.238,106.035,21.252",
+      "license": "ODbL 1.0",
+      "file": "data/raw/osm/tho-duc-map.osm",
+      "use": "Roads, paths, waterways, land use, buildings and place labels"
+    },
+    {
+      "id": "btnmt-05-2018",
+      "title": "Thông tư 05/2018/TT-BTNMT - danh mục địa danh tỉnh Bắc Ninh",
+      "url": "https://vupc.mae.gov.vn/Data/files/05-2018-tt-btnmt.pdf",
+      "use": "Relative coordinates for the three heritage sites"
+    },
+    {
+      "id": "tam-da-heritage-list",
+      "title": "Danh mục di tích theo đơn vị hành chính xã Tam Đa mới",
+      "url": "https://tamda.bacninh.gov.vn/news/-/details/65655/danh-muc-di-tich-theo-on-vi-hanh-chinh-xa-tam-a-moi-88589736",
+      "use": "Official names and national heritage classification"
+    },
+    {
+      "id": "song-nhu-nguyet-inventory",
+      "title": "Trích ngang các địa điểm thuộc phòng tuyến sông Như Nguyệt",
+      "url": "https://svhttdl.bacninh.gov.vn/documents/188850/43351101/1._Trich_ngang_phong_tuyen_song_Nhu_Nguyet.pdf",
+      "use": "Historical context and relative spatial descriptions"
+    }
+  ]
+}

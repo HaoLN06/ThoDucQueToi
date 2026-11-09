@@ -2,51 +2,26 @@
 
 ## Heritage location
 
-```ts
-interface HeritageLocation {
-  id: 'dinh_tho_duc' | 'den_can_vang' | 'chua_thap_linh';
-  name: string;
-  category: 'communal_house' | 'temple' | 'pagoda';
-  categoryLabel: string;
-  verification: {
-    status: VerificationStatus;
-    sources: string[];
-    note: string;
-  };
-  geography: { lat: number | null; lng: number | null };
-  world: {
-    mapId: string;
-    x: number;
-    y: number;
-    positionType: 'placeholder';
-  };
-  availableEras: EraId[];
-  description: string;
-}
-```
+`geography` chứa WGS84 và `accuracyMeters`; `null` nghĩa là nguồn không công bố độ chính xác. `world` là pixel được pipeline sinh từ phép chiếu, không nhập tay. `positionType` nhận `verified | provisional | unverified | placeholder`.
 
-`geography` luôn là tọa độ địa lý WGS84 hoặc `null`. `world` luôn là pixel nội bộ; không được sao chép giá trị giữa hai nhóm.
+Ba ID hợp lệ: `dinh_tho_duc`, `den_can_vang`, `chua_thap_linh`. Map runtime là `tho_duc_geographic_v1`.
 
-## Era
+## Geographic map
 
-ID hợp lệ: `present`, `ly_1077`, `le`, `nguyen_1845`, `twentieth_century`. Chỉ hai ID đầu có `enabled: true` trong Sprint 01.
+`geographic-map.json` chứa metadata phép chiếu, world bounds, các layer `roads`, `footpaths`, `water`, `landuse`, `buildings`, ba mốc di sản và các điểm tương tác. Mỗi feature OSM giữ ID nguồn và danh sách world points.
 
-## Save v1
+## Save v2
 
 ```ts
 interface GameState {
-  schemaVersion: 1;
-  player: { mapId: 'placeholder_village'; x: number; y: number };
+  schemaVersion: 2;
+  player: { mapId: 'tho_duc_geographic_v1'; x: number; y: number };
   activeEra: EraId;
-  quest: {
-    guideSpoken: boolean;
-    visitedLocations: LocationId[];
-    portalUsed: boolean;
-    completed: boolean;
-  };
+  quest: QuestProgress;
   discoveredLocations: LocationId[];
+  navigationTarget: LocationId | null;
   started: boolean;
 }
 ```
 
-Validation runtime kiểm tra version, enum, mảng ID, kiểu boolean và tọa độ hữu hạn trước khi chấp nhận save.
+Save v1 được migrate: giữ era/nhiệm vụ/điểm đã khám phá, chuyển người chơi về spawn an toàn vì world cũ không cùng hệ tọa độ. JSON hỏng, enum sai hoặc tọa độ không hữu hạn bị từ chối.

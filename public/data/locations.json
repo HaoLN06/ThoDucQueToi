@@ -1,35 +1,26 @@
 [
   {
-    "id": "dinh_tho_duc",
-    "name": "Đình Thọ Đức",
-    "category": "communal_house",
-    "categoryLabel": "Đình làng",
-    "verification": { "status": "location_unverified", "sources": [], "note": "Vị trí, kiến trúc và thông tin lịch sử cần được kiểm chứng." },
-    "geography": { "lat": null, "lng": null },
-    "world": { "mapId": "placeholder_village", "x": 430, "y": 220, "positionType": "placeholder" },
-    "availableEras": ["present"],
-    "description": "Điểm khám phá di sản trong bản demo kỹ thuật. Nội dung lịch sử chưa được cung cấp."
+    "id": "dinh_tho_duc", "name": "Đình Thọ Đức", "category": "communal_house", "categoryLabel": "Đình làng",
+    "verification": { "status": "provisional", "sources": ["Thông tư 05/2018/TT-BTNMT", "Danh mục di tích xã Tam Đa, 2026"], "note": "Tọa độ vị trí tương đối từ danh mục nhà nước; chưa kiểm chứng bằng khảo sát thực địa." },
+    "geography": { "lat": 21.244166667, "lng": 106.021944444, "accuracyMeters": null },
+    "world": { "mapId": "tho_duc_geographic_v1", "x": 519.09, "y": 1015.61, "positionType": "provisional" },
+    "availableEras": ["present", "ly_1077"],
+    "description": "Di tích quốc gia thuộc cụm di tích Thọ Đức. Vị trí hiện tại được dùng làm điểm vào câu chuyện; lớp năm 1077 là tái hiện diễn giải, không phải phục dựng khảo cổ."
   },
   {
-    "id": "den_can_vang",
-    "name": "Đền Can Vang",
-    "category": "temple",
-    "categoryLabel": "Đền",
-    "verification": { "status": "location_unverified", "sources": [], "note": "Vị trí, kiến trúc và thông tin lịch sử cần được kiểm chứng." },
-    "geography": { "lat": null, "lng": null },
-    "world": { "mapId": "placeholder_village", "x": 790, "y": 250, "positionType": "placeholder" },
-    "availableEras": ["present"],
-    "description": "Điểm khám phá di sản trong bản demo kỹ thuật. Nội dung lịch sử chưa được cung cấp."
+    "id": "den_can_vang", "name": "Đền Can Vang", "category": "temple", "categoryLabel": "Đền",
+    "verification": { "status": "provisional", "sources": ["Thông tư 05/2018/TT-BTNMT", "Danh mục di tích xã Tam Đa, 2026"], "note": "Tọa độ vị trí tương đối từ danh mục nhà nước; chưa kiểm chứng bằng khảo sát thực địa." },
+    "geography": { "lat": 21.246111111, "lng": 106.031944444, "accuracyMeters": null },
+    "world": { "mapId": "tho_duc_geographic_v1", "x": 1632.29, "y": 783.37, "positionType": "provisional" },
+    "availableEras": ["present", "ly_1077"],
+    "description": "Di tích quốc gia gắn với không gian bến Can Vang và phòng tuyến sông Như Nguyệt. Chi tiết lịch sử trong lớp 1077 được trình bày như diễn giải."
   },
   {
-    "id": "chua_thap_linh",
-    "name": "Chùa Tháp Linh",
-    "category": "pagoda",
-    "categoryLabel": "Chùa",
-    "verification": { "status": "location_unverified", "sources": [], "note": "Vị trí, kiến trúc và thông tin lịch sử cần được kiểm chứng." },
-    "geography": { "lat": null, "lng": null },
-    "world": { "mapId": "placeholder_village", "x": 620, "y": 610, "positionType": "placeholder" },
-    "availableEras": ["present"],
-    "description": "Điểm khám phá di sản trong bản demo kỹ thuật. Nội dung lịch sử chưa được cung cấp."
+    "id": "chua_thap_linh", "name": "Chùa Tháp Linh", "category": "pagoda", "categoryLabel": "Chùa",
+    "verification": { "status": "provisional", "sources": ["Thông tư 05/2018/TT-BTNMT", "Danh mục di tích xã Tam Đa, 2026"], "note": "Nguồn tọa độ ghi “chùa Thọ Đức”, còn danh mục di tích ghi “Chùa Tháp Linh”; cần xác minh việc đồng nhất tên." },
+    "geography": { "lat": 21.246666667, "lng": 106.023055556, "accuracyMeters": null },
+    "world": { "mapId": "tho_duc_geographic_v1", "x": 642.78, "y": 717.01, "positionType": "provisional" },
+    "availableEras": ["present", "ly_1077"],
+    "description": "Di tích quốc gia ở phía tây bắc thôn Thọ Đức theo tư liệu của ngành văn hóa. Tên tương ứng với nguồn tọa độ vẫn cần được xác minh."
   }
 ]

@@ -1,0 +1,43 @@
+{
+  "source": {
+    "title": "Thông tư 05/2018/TT-BTNMT - Danh mục địa danh dân cư, sơn văn, thủy văn, kinh tế - xã hội phục vụ công tác thành lập bản đồ tỉnh Bắc Ninh",
+    "url": "https://vupc.mae.gov.vn/Data/files/05-2018-tt-btnmt.pdf",
+    "coordinateMeaning": "Tọa độ vị trí tương đối của đối tượng",
+    "accessedAt": "2026-11-09"
+  },
+  "locations": [
+    {
+      "id": "dinh_tho_duc",
+      "sourceName": "đình Thọ Đức",
+      "name": "Đình Thọ Đức",
+      "latitude": 21.244166667,
+      "longitude": 106.021944444,
+      "dms": "21°14'39\"N, 106°01'19\"E",
+      "status": "provisional",
+      "accuracyMeters": null,
+      "note": "Tọa độ vị trí tương đối trong danh mục nhà nước; chưa kiểm chứng bằng khảo sát thực địa."
+    },
+    {
+      "id": "den_can_vang",
+      "sourceName": "đền Can Vang",
+      "name": "Đền Can Vang",
+      "latitude": 21.246111111,
+      "longitude": 106.031944444,
+      "dms": "21°14'46\"N, 106°01'55\"E",
+      "status": "provisional",
+      "accuracyMeters": null,
+      "note": "Tọa độ vị trí tương đối trong danh mục nhà nước; chưa kiểm chứng bằng khảo sát thực địa."
+    },
+    {
+      "id": "chua_thap_linh",
+      "sourceName": "chùa Thọ Đức",
+      "name": "Chùa Tháp Linh",
+      "latitude": 21.246666667,
+      "longitude": 106.023055556,
+      "dms": "21°14'48\"N, 106°01'23\"E",
+      "status": "provisional",
+      "accuracyMeters": null,
+      "note": "Danh mục tọa độ ghi 'chùa Thọ Đức'; danh mục di tích của xã ghi 'Chùa Tháp Linh'. Việc đồng nhất tên cần xác minh thực địa/tư liệu gốc."
+    }
+  ]
+}

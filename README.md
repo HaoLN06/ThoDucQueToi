@@ -1,22 +1,33 @@
 # Thọ Đức – Dấu Ấn Thời Gian
 
-Vertical slice Sprint 01 của game khám phá 2D chạy trực tiếp trên trình duyệt. Người chơi di chuyển trong một bản đồ làng **hoàn toàn minh họa**, trò chuyện với nhân vật hư cấu, khám phá ba điểm nội dung placeholder và mở cổng sang cảnh năm 1077 được diễn giải dưới dạng tái hiện kỹ thuật.
+Mini game khám phá 2D chạy trong trình duyệt. Sprint 02 thay bản đồ hình học của Sprint 01 bằng nền địa lý khái quát của thôn Thọ Đức, xã Tam Đa, Bắc Ninh, đồng thời giữ nguyên nhiệm vụ, hai thời kỳ, điều khiển và tiến trình đã lưu.
 
-> Dự án không khẳng định vị trí địa lý, kiến trúc hoặc dữ kiện lịch sử về Thọ Đức. Tọa độ địa lý được để `null`; dữ liệu chỉ được bổ sung sau khi có nguồn đã kiểm tra.
-
-## Yêu cầu
-
-- Node.js 22.12 trở lên (CI dùng Node 24)
-- npm 11 trở lên
+> Bản đồ dùng dữ liệu OpenStreetMap và tọa độ vị trí tương đối trong Thông tư 05/2018/TT-BTNMT. Ba vị trí di tích đều mang trạng thái **tạm xác định**, không dùng để dẫn đường hoặc thay thế khảo sát thực địa. Lớp năm 1077 là tái hiện diễn giải trên cùng hệ tọa độ hiện tại.
 
 ## Chạy tại máy
+
+Yêu cầu Node.js 22.12+ và npm 11+.
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Mở URL do Vite in ra. Không cần backend, tài khoản hay biến môi trường.
+Ứng dụng không cần backend, tài khoản hoặc khóa API. Tất cả tài nguyên bản đồ được đóng gói cùng build.
+
+## Pipeline bản đồ
+
+```bash
+npm run map:build
+npm run map:validate
+```
+
+- Nguồn thô được giữ trong `data/raw`; không sửa trực tiếp để phục vụ game.
+- `scripts/build-game-map.mjs` chiếu WGS84 sang hệ mét Web Mercator cục bộ rồi sang world pixel.
+- Kết quả xác định được ghi vào `data/generated/tho-duc-game-map.json` và `public/data/geographic-map.json`.
+- Attribution OSM được hiển thị trong minimap.
+
+Chi tiết nguồn, phạm vi và sai số: [docs/geodata-sources.md](docs/geodata-sources.md).
 
 ## Kiểm tra
 
@@ -29,38 +40,26 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-`test:e2e` build bản production, phục vụ dưới subpath `/ThoDucQueToi/` và chạy trên cấu hình desktop lẫn mobile Chromium.
+`test:e2e` phục vụ production build tại `/ThoDucQueToi/` trên desktop và mobile Chromium. `npm run build` tự chạy lại pipeline bản đồ và kiểm tra dữ liệu.
 
-## Điều khiển
+## Điều khiển và bản đồ
 
-- Desktop: WASD hoặc phím mũi tên để di chuyển; `E`/Space để tương tác; `T` để đổi thời kỳ sau khi mở khóa.
-- Mobile: cụm phím định hướng và nút **Tương tác** trên màn hình.
-- `Escape`: đóng hội thoại hoặc panel đang mở.
+- Desktop: WASD/phím mũi tên để đi; `E`/Space để tương tác; `T` để đổi thời kỳ sau khi mở khóa.
+- Mobile: cụm phím hướng và nút **Tương tác**.
+- Minimap cho biết người chơi, ba di tích, đường/lối đi và cho phép chọn điểm đến để xem hướng, khoảng cách theo tỷ lệ bản đồ.
+- Save Sprint 01 được tự động nâng từ schema 1 lên schema 2; nhiệm vụ, khám phá và thời kỳ được giữ, còn vị trí người chơi chuyển về điểm xuất phát an toàn trên bản đồ mới.
 
-## Kiến trúc
+## Cấu trúc
 
-- `src/game`: Phaser runtime, va chạm, camera, chuyển động và biểu diễn scene.
-- `src/services`: trạng thái phiên chơi, nhiệm vụ, thời kỳ, registry và localStorage.
-- `src/features`: panel React cho hội thoại, nhật ký và điều khiển.
-- `src/shared`: event/command typed, types và validation.
-- `public/data`: nội dung JSON bên ngoài runtime code.
+- `data/raw`: dữ liệu nguồn và provenance.
+- `data/generated`: đầu ra pipeline dùng để kiểm tra/review.
+- `public/data`: nội dung runtime đã đóng gói.
+- `src/game`: Phaser scene, camera, va chạm và biểu diễn hai thời kỳ.
+- `src/services`: phép chiếu, trạng thái phiên, save migration, nhiệm vụ và thời kỳ.
+- `src/features/map`: minimap, chú giải và chọn điểm đến.
 
-React không chỉnh trực tiếp scene Phaser. Hai phía giao tiếp qua `TypedEventBus`; trạng thái nghiệp vụ nằm ở `GameSession` và các service thuần TypeScript. Xem [docs/architecture.md](docs/architecture.md).
+## Triển khai
 
-## Build và triển khai
+Vite build vào `dist/` với base path `/ThoDucQueToi/`. Workflow `.github/workflows/deploy.yml` triển khai GitHub Pages khi có thay đổi trên `main` hoặc chạy thủ công. URL dự kiến: `https://haoln06.github.io/ThoDucQueToi/`.
 
-```bash
-npm run build
-npm run preview
-```
-
-Vite build vào `dist/` với base path `/ThoDucQueToi/`. Workflow `.github/workflows/deploy.yml` build và triển khai artifact lên GitHub Pages khi push vào `main`. Trong repository GitHub, bật **Settings → Pages → Source: GitHub Actions**.
-
-## Giới hạn Sprint 01
-
-- Bản đồ, hình khối, vị trí và cảnh 1077 là placeholder kỹ thuật, không phải phục dựng lịch sử.
-- Chưa có âm thanh, ảnh khảo sát, bản đồ Tiled hoặc tap-to-move.
-- Lưu dữ liệu chỉ ở localStorage của từng trình duyệt; không đồng bộ nhiều thiết bị.
-- Các thời kỳ Lê, 1845 và thế kỷ XX đã đăng ký nhưng chưa mở.
-
-Tài liệu liên quan: [thiết kế game](docs/game-design.md), [quy tắc nội dung](docs/content-guidelines.md), [schema](docs/data-schema.md), [nghiệm thu Sprint 01](docs/sprint-01-acceptance.md).
+Sprint này chưa có khảo sát thực địa, ảnh vệ tinh, dữ liệu thửa đất, phục dựng khảo cổ hay dẫn đường theo mạng đường. Xem [kế hoạch Sprint 02](docs/sprint-02-plan.md) và [nghiệm thu Sprint 02](docs/sprint-02-acceptance.md).

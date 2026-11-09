@@ -13,7 +13,7 @@ export function validateLocation(value: unknown): HeritageLocation {
     throw new Error(`Tọa độ địa lý của ${item.id} không hợp lệ.`);
   }
   const world = item.world as Record<string, unknown> | undefined;
-  if (!world || typeof world.x !== 'number' || typeof world.y !== 'number' || world.positionType !== 'placeholder') {
+  if (!world || typeof world.x !== 'number' || typeof world.y !== 'number' || !['verified', 'provisional', 'unverified', 'placeholder'].includes(String(world.positionType))) {
     throw new Error(`Tọa độ bản đồ nội bộ của ${item.id} không hợp lệ.`);
   }
   const verification = item.verification as Record<string, unknown> | undefined;
@@ -32,5 +32,6 @@ export function validateContent(value: unknown): GameContent {
     throw new Error('Thiếu dữ liệu thời kỳ bắt buộc.');
   }
   if (!Array.isArray(content.dialogues) || !Array.isArray(content.quests)) throw new Error('Thiếu hội thoại hoặc nhiệm vụ.');
+  if (!content.map || content.map.mapId !== 'tho_duc_geographic_v1') throw new Error('Thiếu dữ liệu bản đồ địa lý Thọ Đức.');
   return content as GameContent;
 }
