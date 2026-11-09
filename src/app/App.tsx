@@ -115,7 +115,7 @@ export default function App() {
           <button className="icon-button" onClick={() => setModal({ type: 'journal' })}>Nhật ký <span>{state.discoveredLocations.length}/3</span></button>
         </div>
       </header>
-      <div className="map-disclaimer">Bản đồ địa lý khái quát · Vị trí di tích tạm xác định · Không dùng để dẫn đường thực địa</div>
+      <div className="map-disclaimer">{state.activeEra === 'ly_1077' ? 'Tái hiện diễn giải chưa được xác minh · Đã ẩn đường và công trình hiện đại · Thủy hệ là mốc tham chiếu' : 'Bản đồ địa lý khái quát · Vị trí di tích tạm xác định · Không dùng để dẫn đường thực địa'}</div>
       <MapPanel session={session} state={state} />
       <aside className="quest-card">
         <small>NHIỆM VỤ HIỆN TẠI</small>

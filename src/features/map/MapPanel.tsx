@@ -16,7 +16,7 @@ export function MapPanel({ session, state }: { session: GameSession; state: Game
     <aside className={`map-panel ${expanded ? 'expanded' : ''}`} aria-label="Bản đồ Thọ Đức">
       <button className="map-toggle" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded}>🗺 {expanded ? 'Thu nhỏ' : 'Bản đồ'}</button>
       <div className="map-content">
-        <div className="map-title"><strong>THỌ ĐỨC</strong><small>Bắc Ninh · Bắc ở phía trên</small></div>
+        <div className="map-title"><strong>THỌ ĐỨC</strong><small>{state.activeEra === 'ly_1077' ? 'Bản đồ tham chiếu hiện tại' : 'Bắc Ninh · Bắc ở phía trên'}</small></div>
         <svg viewBox={`0 0 ${map.projection.world.width} ${map.projection.world.height}`} role="img" aria-label="Bản đồ thu nhỏ vị trí người chơi và ba di tích">
           <rect width="100%" height="100%" className="mini-ground" />
           {map.layers.water.map((feature) => <path key={feature.id} d={path(feature.points)} className="mini-water" />)}
@@ -32,7 +32,7 @@ export function MapPanel({ session, state }: { session: GameSession; state: Game
           {session.content.locations.map((location) => <button key={location.id} className={state.navigationTarget === location.id ? 'active' : ''} onClick={() => session.setNavigationTarget(state.navigationTarget === location.id ? null : location.id)}>{location.name}</button>)}
         </div>
         {target && <div className="destination"><span className="direction-arrow" style={{ transform: `rotate(${angle}deg)` }}>➜</span><span><strong>{target.name}</strong><small>{Math.round(distance ?? 0)} m theo tỷ lệ bản đồ</small></span></div>}
-        <p className="map-quality">Vị trí di tích: <strong>tạm xác định</strong>. Chưa khảo sát thực địa.</p>
+        <p className="map-quality">{state.activeEra === 'ly_1077' ? <><strong>Minimap giữ lớp hiện đại để định hướng</strong>; không đại diện địa hình năm 1077.</> : <>Vị trí di tích: <strong>tạm xác định</strong>. Chưa khảo sát thực địa.</>}</p>
         <small className="attribution">{map.attribution}</small>
       </div>
     </aside>

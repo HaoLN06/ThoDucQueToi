@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import type { EraId, MapFeature } from '../../shared/types/content';
 import type { InteractionTarget } from '../../shared/events/GameEvents';
 import type { GameSession } from '../../services/GameSession';
+import { NavigationService } from '../../services/NavigationService';
+import { getEraVisualLayers } from '../../services/MapLayerService';
 
 interface TargetPoint { x: number; y: number; target: InteractionTarget; visual?: Phaser.GameObjects.Container }
 
@@ -15,7 +17,7 @@ export class VillageScene extends Phaser.Scene {
   private nearest: TargetPoint | null = null;
   private targetPoints: TargetPoint[] = [];
   private eraLayer!: Phaser.GameObjects.Container;
-  private obstacles!: Phaser.Physics.Arcade.StaticGroup;
+  private navigation!: NavigationService;
   private unsubscribe: Array<() => void> = [];
   private lastPositionSave = 0;
   private renderedEra: EraId | null = null;
@@ -27,15 +29,14 @@ export class VillageScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, width, height);
     this.cameras.main.setBounds(0, 0, width, height);
     this.createTextures();
+    this.navigation = new NavigationService(this.session.content.map);
     this.eraLayer = this.add.container(0, 0).setDepth(-10);
     this.drawEnvironment();
-    this.createObstacles();
     this.createTargets();
 
     const state = this.session.snapshot();
     this.player = this.physics.add.sprite(state.player.x, state.player.y, 'player-idle');
     this.player.setCircle(15, 3, 10).setCollideWorldBounds(true).setDepth(20);
-    this.physics.add.collider(this.player, this.obstacles);
     this.cameras.main.startFollow(this.player, true, 0.12, 0.12);
     this.cameras.main.setZoom(window.matchMedia('(max-width: 780px)').matches ? 0.82 : 1.05);
 
@@ -60,7 +61,7 @@ export class VillageScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.unsubscribe.splice(0).forEach((off) => off()));
   }
 
-  update(time: number): void {
+  update(time: number, delta: number): void {
     const speed = 230;
     this.vector.set(0, 0);
     if (!this.pausedByUi) {
@@ -71,7 +72,10 @@ export class VillageScene extends Phaser.Scene {
       if (this.vector.lengthSq() === 0) this.vector.copy(this.touchVector);
     }
     if (this.vector.lengthSq() > 0) this.vector.normalize().scale(speed);
-    this.player.setVelocity(this.vector.x, this.vector.y).setTexture(this.vector.lengthSq() ? 'player-walk' : 'player-idle');
+    this.player.setVelocity(0, 0).setTexture(this.vector.lengthSq() ? 'player-walk' : 'player-idle');
+    const next = { x: this.player.x + this.vector.x * delta / 1000, y: this.player.y + this.vector.y * delta / 1000 };
+    const era = this.session.snapshot().activeEra;
+    if (this.vector.lengthSq() > 0 && this.navigation.canMove(this.player, next, era)) this.player.setPosition(next.x, next.y);
     if (this.vector.x !== 0) this.player.setFlipX(this.vector.x < 0);
     this.updateNearestTarget();
     this.session.updatePlayer(this.player.x, this.player.y);
@@ -92,19 +96,26 @@ export class VillageScene extends Phaser.Scene {
     this.renderedEra = era;
     this.eraLayer.removeAll(true);
     const historical = era === 'ly_1077';
+    const layers = getEraVisualLayers(this.session.content.map, era);
     const { width, height } = this.session.content.map.projection.world;
     this.eraLayer.add(this.add.rectangle(width / 2, height / 2, width, height, historical ? 0xb8aa78 : 0xb9d49b));
-    this.drawPolygons(this.session.content.map.layers.landuse, historical ? 0x8f9564 : 0x8fbd72, 0.78);
-    this.drawLines(this.session.content.map.layers.water, historical ? 0x718e8a : 0x65a9b2, 20);
-    this.drawLines(this.session.content.map.layers.roads, historical ? 0xc5ad79 : 0xdacaa5, 18, historical ? 0x8e7955 : 0x9d9178);
-    this.drawLines(this.session.content.map.layers.footpaths, historical ? 0xd5c394 : 0xeee1bf, 8);
-    this.drawPolygons(this.session.content.map.layers.buildings, historical ? 0x7d684d : 0x9a624b, 0.95, 0x5e4635);
-    const label = this.add.text(95, 95, historical ? 'THỌ ĐỨC · LỚP TÁI HIỆN 1077' : 'THỌ ĐỨC · BẢN ĐỒ HIỆN TẠI', { fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '18px', color: historical ? '#493b2c' : '#173b33', fontStyle: 'bold' });
-    this.eraLayer.add(label);
+    if (historical) {
+      this.drawHistoricalReconstruction(width, height);
+      this.drawLines(layers.water, 0x6f8882, 14, undefined, 0.55);
+    } else {
+      this.drawPolygons(layers.landuse, 0x8fbd72, 0.78);
+      this.drawLines(layers.water, 0x65a9b2, 20);
+      this.drawLines(layers.roads, 0xdacaa5, 18, 0x9d9178);
+      this.drawLines(layers.footpaths, 0xeee1bf, 8);
+      this.drawPolygons(layers.buildings, 0x9a624b, 0.95, 0x5e4635);
+    }
+    const label = this.add.text(95, 95, historical ? 'THỌ ĐỨC · TÁI HIỆN DIỄN GIẢI 1077' : 'THỌ ĐỨC · BẢN ĐỒ HIỆN TẠI', { fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '18px', color: historical ? '#493b2c' : '#173b33', fontStyle: 'bold' });
+    const note = historical ? this.add.text(95, 124, 'Không hiển thị đường/công trình hiện đại · Thủy hệ chỉ là mốc tham chiếu hiện nay', { fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '13px', color: '#584a36', backgroundColor: '#e6d7a8', padding: { x: 8, y: 5 } }) : null;
+    this.eraLayer.add(note ? [label, note] : label);
   }
 
-  private drawLines(features: MapFeature[], color: number, width: number, outline?: number): void {
-    const graphics = this.add.graphics();
+  private drawLines(features: MapFeature[], color: number, width: number, outline?: number, alpha = 1): void {
+    const graphics = this.add.graphics().setAlpha(alpha);
     const draw = (stroke: number, lineWidth: number) => {
       graphics.lineStyle(lineWidth, stroke, 1);
       features.forEach(({ points }) => { if (points.length < 2) return; graphics.beginPath().moveTo(points[0].x, points[0].y); points.slice(1).forEach((p) => graphics.lineTo(p.x, p.y)); graphics.strokePath(); });
@@ -114,19 +125,21 @@ export class VillageScene extends Phaser.Scene {
     this.eraLayer.add(graphics);
   }
 
+  private drawHistoricalReconstruction(width: number, height: number): void {
+    const shapes = [
+      this.add.ellipse(width * .2, height * .28, 430, 260, 0x8f9564, .45),
+      this.add.ellipse(width * .55, height * .64, 680, 390, 0x9c925f, .35),
+      this.add.ellipse(width * .78, height * .24, 410, 300, 0x7e8e5b, .38),
+    ];
+    const texture = this.add.graphics().lineStyle(3, 0x746b48, .28);
+    for (let y = 260; y < height; y += 170) texture.lineBetween(100, y, width - 100, y + 45);
+    this.eraLayer.add([...shapes, texture]);
+  }
+
   private drawPolygons(features: MapFeature[], color: number, alpha: number, stroke = color): void {
     const graphics = this.add.graphics().fillStyle(color, alpha).lineStyle(2, stroke, 0.8);
     features.forEach(({ points }) => { if (points.length < 3) return; graphics.beginPath().moveTo(points[0].x, points[0].y); points.slice(1).forEach((p) => graphics.lineTo(p.x, p.y)); graphics.closePath().fillPath().strokePath(); });
     this.eraLayer.add(graphics);
-  }
-
-  private createObstacles(): void {
-    this.obstacles = this.physics.add.staticGroup();
-    this.session.content.map.layers.buildings.forEach(({ points }) => {
-      const xs = points.map((p) => p.x); const ys = points.map((p) => p.y);
-      const minX = Math.min(...xs); const maxX = Math.max(...xs); const minY = Math.min(...ys); const maxY = Math.max(...ys);
-      if (maxX - minX > 4 && maxY - minY > 4) this.obstacles.add(this.add.rectangle((minX + maxX) / 2, (minY + maxY) / 2, maxX - minX, maxY - minY, 0, 0));
-    });
   }
 
   private createTargets(): void {
