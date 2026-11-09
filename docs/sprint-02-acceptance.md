@@ -10,6 +10,10 @@
 - [x] Hai thời kỳ dùng cùng hệ tọa độ; năm 1077 được ghi rõ là tái hiện.
 - [x] Minimap desktop/mobile có người chơi, di tích, đường, chú giải, điểm đến và khoảng cách.
 - [x] Save schema 1 được migrate, giữ tiến trình nhiệm vụ và khám phá.
+- [x] Lớp 1077 loại bỏ đường, lối đi, công trình và land-use hiện đại; thủy hệ có nhãn mốc tham chiếu.
+- [x] Navigation polygon/segment kiểm tra sông, ao kín và công trình; không dùng bounding box bao toàn bộ công trình.
+- [x] E2E dùng bàn phím đi thực tế tới NPC, ba di tích và cổng; xác nhận đổi thời kỳ lặp lại không làm mất tiến trình.
+- [x] E2E kiểm tra minimap/điều khiển trên Pixel 7.
 - [x] Runtime không gọi API bản đồ hoặc backend.
 - [ ] Kiểm chứng thực địa tọa độ, ranh giới và tên Chùa Tháp Linh.
 
