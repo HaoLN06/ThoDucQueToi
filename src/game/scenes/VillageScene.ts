@@ -4,6 +4,7 @@ import type { InteractionTarget } from '../../shared/events/GameEvents';
 import type { GameSession } from '../../services/GameSession';
 import { NavigationService } from '../../services/NavigationService';
 import { getEraVisualLayers } from '../../services/MapLayerService';
+import { renderVillageArt } from '../rendering/VillageArtRenderer';
 
 interface TargetPoint { x: number; y: number; target: InteractionTarget; visual?: Phaser.GameObjects.Container }
 
@@ -21,6 +22,7 @@ export class VillageScene extends Phaser.Scene {
   private unsubscribe: Array<() => void> = [];
   private lastPositionSave = 0;
   private renderedEra: EraId | null = null;
+  private facing: 'up' | 'down' | 'left' | 'right' = 'down';
 
   constructor(private readonly session: GameSession) { super('village'); }
 
@@ -35,7 +37,7 @@ export class VillageScene extends Phaser.Scene {
     this.createTargets();
 
     const state = this.session.snapshot();
-    this.player = this.physics.add.sprite(state.player.x, state.player.y, 'player-idle');
+    this.player = this.physics.add.sprite(state.player.x, state.player.y, 'player-down-idle');
     this.player.setCircle(15, 3, 10).setCollideWorldBounds(true).setDepth(20);
     this.cameras.main.startFollow(this.player, true, 0.12, 0.12);
     this.cameras.main.setZoom(window.matchMedia('(max-width: 780px)').matches ? 0.82 : 1.05);
@@ -72,11 +74,11 @@ export class VillageScene extends Phaser.Scene {
       if (this.vector.lengthSq() === 0) this.vector.copy(this.touchVector);
     }
     if (this.vector.lengthSq() > 0) this.vector.normalize().scale(speed);
-    this.player.setVelocity(0, 0).setTexture(this.vector.lengthSq() ? 'player-walk' : 'player-idle');
+    if (this.vector.lengthSq() > 0) this.facing = Math.abs(this.vector.x) > Math.abs(this.vector.y) ? (this.vector.x < 0 ? 'left' : 'right') : (this.vector.y < 0 ? 'up' : 'down');
+    this.player.setVelocity(0, 0).setTexture(`player-${this.facing}-${this.vector.lengthSq() ? 'walk' : 'idle'}`).setDepth(this.player.y + 12);
     const next = { x: this.player.x + this.vector.x * delta / 1000, y: this.player.y + this.vector.y * delta / 1000 };
     const era = this.session.snapshot().activeEra;
     if (this.vector.lengthSq() > 0 && this.navigation.canMove(this.player, next, era)) this.player.setPosition(next.x, next.y);
-    if (this.vector.x !== 0) this.player.setFlipX(this.vector.x < 0);
     this.updateNearestTarget();
     this.session.updatePlayer(this.player.x, this.player.y);
     if (time - this.lastPositionSave > 1500) { this.session.flushPlayerPosition(); this.lastPositionSave = time; }
@@ -85,8 +87,12 @@ export class VillageScene extends Phaser.Scene {
   private createTextures(): void {
     if (this.textures.exists('player-idle')) return;
     const graphics = this.make.graphics({ x: 0, y: 0 }, false);
-    graphics.fillStyle(0x173b33).fillCircle(18, 20, 14).fillStyle(0xf2c879).fillCircle(18, 12, 8).fillStyle(0xf7f0d5).fillRoundedRect(7, 23, 22, 19, 7).generateTexture('player-idle', 36, 44);
-    graphics.clear().fillStyle(0x173b33).fillCircle(18, 19, 14).fillStyle(0xf2c879).fillCircle(18, 11, 8).fillStyle(0xe9b44c).fillRoundedRect(7, 22, 22, 19, 7).generateTexture('player-walk', 36, 44).destroy();
+    (['up', 'down', 'left', 'right'] as const).forEach((direction, index) => {
+      const accent = [0xe9b44c, 0xf7f0d5, 0x5c8eb5, 0xb56555][index];
+      graphics.clear().fillStyle(0x203f36).fillEllipse(18, 19, 26, 29).fillStyle(0xf2c879).fillCircle(18, 11, 8).fillStyle(accent).fillRoundedRect(7, 23, 22, 18, 6).generateTexture(`player-${direction}-idle`, 36, 44);
+      graphics.clear().fillStyle(0x203f36).fillEllipse(18, 18, 26, 29).fillStyle(0xf2c879).fillCircle(18, 10, 8).fillStyle(accent).fillRoundedRect(7, 22, 22, 18, 6).fillStyle(0x513d31).fillRect(5, 39, 9, 4).fillRect(22, 39, 9, 4).generateTexture(`player-${direction}-walk`, 36, 44);
+    });
+    graphics.destroy();
   }
 
   private drawEnvironment(): void {
@@ -109,6 +115,7 @@ export class VillageScene extends Phaser.Scene {
       this.drawLines(layers.footpaths, 0xeee1bf, 8);
       this.drawPolygons(layers.buildings, 0x9a624b, 0.95, 0x5e4635);
     }
+    renderVillageArt(this, this.eraLayer, this.session.content.map, era);
     const label = this.add.text(95, 95, historical ? 'THỌ ĐỨC · TÁI HIỆN DIỄN GIẢI 1077' : 'THỌ ĐỨC · BẢN ĐỒ HIỆN TẠI', { fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '18px', color: historical ? '#493b2c' : '#173b33', fontStyle: 'bold' });
     const note = historical ? this.add.text(95, 124, 'Không hiển thị đường/công trình hiện đại · Thủy hệ chỉ là mốc tham chiếu hiện nay', { fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '13px', color: '#584a36', backgroundColor: '#e6d7a8', padding: { x: 8, y: 5 } }) : null;
     this.eraLayer.add(note ? [label, note] : label);
@@ -144,10 +151,16 @@ export class VillageScene extends Phaser.Scene {
 
   private createTargets(): void {
     const { guide, portal } = this.session.content.map.interaction;
-    this.targetPoints.push({ ...guide, target: { type: 'guide' }, visual: this.createMarker(guide.x, guide.y, 0xe6b34a, 'NGƯỜI DẪN CHUYỆN') });
-    this.session.locations.all().forEach((location) => this.targetPoints.push({ x: location.world.x, y: location.world.y, target: { type: 'location', location }, visual: this.createMarker(location.world.x, location.world.y, 0x9d4b55, location.name.toUpperCase()) }));
+    this.targetPoints.push({ ...guide, target: { type: 'guide' }, visual: this.createGuide(guide.x, guide.y) });
+    this.session.locations.all().forEach((location) => this.targetPoints.push({ x: location.world.x, y: location.world.y, target: { type: 'location', location }, visual: this.createMarker(location.world.x, location.world.y, 0x9d4b55, location.id === 'dinh_tho_duc' ? 'ĐIỂM KÝ ỨC\nĐÌNH THỌ ĐỨC' : location.name.toUpperCase()) }));
     const portalVisual = this.createMarker(portal.x, portal.y, 0x644d82, 'CỔNG THỜI GIAN');
     this.targetPoints.push({ ...portal, target: { type: 'portal', unlocked: false }, visual: portalVisual });
+  }
+
+  private createGuide(x: number, y: number): Phaser.GameObjects.Container {
+    const guide = this.add.container(x, y).setDepth(y + 15);
+    guide.add([this.add.ellipse(3, 18, 38, 12, 0x253d31, .2), this.add.rectangle(0, 4, 22, 27, 0x9a5d44), this.add.circle(0, -12, 10, 0xf1bd80), this.add.triangle(0, -27, -14, 5, 14, 5, 0, -12, 0x365c4d), this.add.text(0, 28, 'NGƯỜI DẪN CHUYỆN', { fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '11px', color: '#173b33', backgroundColor: '#fff7e5', padding: { x: 5, y: 3 } }).setOrigin(.5)]);
+    return guide;
   }
 
   private createMarker(x: number, y: number, color: number, text: string): Phaser.GameObjects.Container {

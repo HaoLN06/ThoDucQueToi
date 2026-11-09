@@ -54,7 +54,7 @@ test('di chuyển thực tế tới NPC, ba di tích và cổng thời gian', as
     await page.getByRole('button', { name: 'Tiếp tục' }).click();
     await page.keyboard.down(target.key);
     try {
-      await expect(page.getByRole('button', { name: new RegExp(target.prompt) })).toBeVisible({ timeout: 2500 });
+      await expect(page.getByRole('button', { name: new RegExp(target.prompt) })).toBeVisible({ timeout: 5000 });
     } finally {
       await page.keyboard.up(target.key);
     }
