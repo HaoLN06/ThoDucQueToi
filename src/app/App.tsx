@@ -9,6 +9,7 @@ import { DialoguePanel } from '../features/dialogue/DialoguePanel';
 import { LocationPanel } from '../features/dialogue/LocationPanel';
 import { JournalPanel } from '../features/journal/JournalPanel';
 import { MobileControls } from '../features/input/MobileControls';
+import { MapPanel } from '../features/map/MapPanel';
 
 type Phase = 'loading' | 'menu' | 'game' | 'error';
 type Modal = { type: 'guide'; step: number } | { type: 'location'; location: HeritageLocation } | { type: 'journal' } | { type: 'help' } | null;
@@ -96,7 +97,7 @@ export default function App() {
             {session.hasSave() && <button className="button-secondary" onClick={() => begin(true)}>Tiếp tục</button>}
             <button className="button-quiet" onClick={() => setModal({ type: 'help' })}>Hướng dẫn</button>
           </div>
-          <small>Bản đồ và nội dung trong Sprint 01 là dữ liệu minh họa, chưa phải địa hình thực tế.</small>
+          <small>Bản đồ Sprint 02 dùng dữ liệu OSM và tọa độ tương đối từ nguồn nhà nước; chưa thay thế khảo sát thực địa.</small>
         </section>
         {modal?.type === 'help' && <HelpPanel onClose={closeModal} />}
       </main>
@@ -114,7 +115,8 @@ export default function App() {
           <button className="icon-button" onClick={() => setModal({ type: 'journal' })}>Nhật ký <span>{state.discoveredLocations.length}/3</span></button>
         </div>
       </header>
-      <div className="map-disclaimer">Bản đồ minh họa – chưa phải địa hình thực tế</div>
+      <div className="map-disclaimer">Bản đồ địa lý khái quát · Vị trí di tích tạm xác định · Không dùng để dẫn đường thực địa</div>
+      <MapPanel session={session} state={state} />
       <aside className="quest-card">
         <small>NHIỆM VỤ HIỆN TẠI</small>
         <strong>{state.quest.completed ? 'Hành trình đầu tiên đã hoàn thành!' : 'Những dấu ấn đầu tiên'}</strong>

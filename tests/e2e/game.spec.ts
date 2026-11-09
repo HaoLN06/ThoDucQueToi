@@ -2,12 +2,13 @@ import { expect, test } from '@playwright/test';
 
 const saveKey = 'tho-duc-time-journey:save';
 const makeSave = (overrides: Record<string, unknown> = {}) => ({
-  schemaVersion: 1,
-  player: { mapId: 'placeholder_village', x: 430, y: 270 },
+  schemaVersion: 2,
+  player: { mapId: 'tho_duc_geographic_v1', x: 519, y: 1060 },
   activeEra: 'present',
   quest: { guideSpoken: true, visitedLocations: [], portalUsed: false, completed: false },
   discoveredLocations: [],
   started: true,
+  navigationTarget: null,
   ...overrides,
 });
 
@@ -15,12 +16,23 @@ test('mở trang và bắt đầu một phiên chơi', async ({ page }) => {
   await page.goto('./');
   await expect(page.getByRole('heading', { name: /Thọ Đức/ })).toBeVisible();
   await page.getByRole('button', { name: 'Bắt đầu khám phá' }).click();
-  await expect(page.getByLabel('Bản đồ làng minh họa')).toBeVisible();
-  await expect(page.getByText('Bản đồ minh họa – chưa phải địa hình thực tế')).toBeVisible();
+  await expect(page.getByLabel('Bản đồ địa lý Thọ Đức')).toBeVisible();
+  await expect(page.getByText(/Bản đồ địa lý khái quát/)).toBeVisible();
+  await expect(page.getByLabel('Bản đồ Thọ Đức')).toBeVisible();
   await page.keyboard.down('ArrowRight');
   await page.waitForTimeout(250);
   await page.keyboard.up('ArrowRight');
   await expect(page.locator('canvas')).toBeVisible();
+});
+
+test('minimap chọn điểm đến và hiển thị khoảng cách', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: 'Bắt đầu khám phá' }).click();
+  const mapPanel = page.getByLabel('Bản đồ Thọ Đức');
+  const toggle = mapPanel.getByRole('button', { name: /Bản đồ/ });
+  if (await toggle.isVisible()) await toggle.click();
+  await mapPanel.getByRole('button', { name: 'Đền Can Vang' }).click();
+  await expect(mapPanel.getByText(/m theo tỷ lệ bản đồ/)).toBeVisible();
 });
 
 test('mở bảng thông tin di sản và giữ tiến trình sau tải lại', async ({ page }) => {

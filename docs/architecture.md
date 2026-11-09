@@ -1,40 +1,28 @@
-# Kiến trúc Sprint 01
-
-## Mục tiêu
-
-Giữ vertical slice nhỏ, chạy hoàn toàn phía client, nhưng tách runtime game khỏi UI và nghiệp vụ để có thể thay bản đồ placeholder bằng Tiled JSON sau này.
+# Kiến trúc Sprint 02
 
 ## Luồng dữ liệu
 
 ```text
+data/raw → build-game-map → data/generated + public/data/geographic-map.json
+                                            ↓
 public/data/*.json → validation → GameContent
-                                ↓
+                                  ↓
 React UI ← typed events → GameSession ← typed commands → Phaser Scene
-                            ↓
-                      versioned localStorage
+                                  ↓
+                         versioned localStorage
 ```
 
-- `VillageScene` sở hữu sprite, physics body, camera và vùng tương tác.
-- `GameSession` là nguồn trạng thái nghiệp vụ duy nhất, phát snapshot bất biến cho React/Phaser.
-- `QuestService`, `EraService` và `SaveService` không phụ thuộc DOM hoặc Phaser nên được unit test trực tiếp.
-- `TypedEventBus` ngăn React chạm vào internals của scene và tránh vòng đồng bộ hai chiều.
+- `GeographicService` chuyển đổi hai chiều WGS84 ↔ world pixel và tính khoảng cách theo tỷ lệ.
+- `VillageScene` vẽ generated layers, sở hữu physics/camera/player và vùng tương tác.
+- `MapPanel` chỉ đọc `GameContent`/snapshot; chọn điểm đến qua `GameSession`, không chạm internals của Phaser.
+- `GameSession` là nguồn trạng thái nghiệp vụ duy nhất; `SaveService` validate và migrate save.
 
-## Quyết định engine
+## Bản đồ và thời kỳ
 
-Phaser được khóa ở `3.90.0`, bản cuối của nhánh 3. Phiên bản Phaser 4 mới nhất không được chọn vì đặc tả ưu tiên Phaser 3. Quyết định được xác nhận bằng typecheck, production build và Playwright smoke tests; nếu một kiểm tra thất bại, kết quả thực tế được ghi tại `sprint-01-acceptance.md`.
+World 2.052 × 1.832 px lớn hơn viewport phổ biến, camera follow người chơi. Hai era dùng cùng hình học và tọa độ; palette/lớp trình bày khác nhau. `ly_1077` luôn được gọi là lớp tái hiện diễn giải, không khẳng định công trình hiện đại tồn tại nguyên trạng trong lịch sử.
 
-## Bản đồ
+Runtime không gọi API bản đồ. Raw OSM và dữ liệu mốc được pipeline xác định chuyển thành JSON đóng gói. Công trình sinh vùng collision; ranh world ngăn người chơi rời phạm vi.
 
-Bản đồ hiện dùng primitive hình học để không đưa asset không rõ giấy phép vào repository. Tọa độ `world.x/y` là pixel trong map `placeholder_village`; chúng không phải latitude/longitude. Lớp scene giữ logic marker độc lập để sau này đổi sang object layers của Tiled.
+## Lưu trữ và triển khai
 
-## Chuyển thời kỳ
-
-Chỉ một `VillageScene` và một player tồn tại. Đổi era cập nhật state rồi dựng lại riêng `eraLayer`; physics bodies, player và camera được giữ nguyên. Marker hiện đại được ẩn ở cảnh 1077 để không ngầm khẳng định công trình tồn tại cùng vị trí hay kiến trúc.
-
-## Lưu trữ
-
-Key localStorage: `tho-duc-time-journey:save`. Schema hiện tại là version 1. Save không chứa thông tin nhận diện cá nhân. Dữ liệu sai version, JSON hỏng, enum/tọa độ sai bị bỏ qua an toàn.
-
-## Cấu trúc tinh chỉnh
-
-So với cây đề xuất, `src/content/loadContent.ts` được bổ sung làm cổng nạp/validate JSON và các panel nhỏ nằm ngay trong `features`. Map placeholder chưa tách thành file Tiled vì Sprint 01 dùng primitive; quyết định này giữ vertical slice nhẹ và không cản việc thay thế sau đó.
+Key localStorage: `tho-duc-time-journey:save`, schema hiện tại v2. Vite base `/ThoDucQueToi/`; GitHub Pages nhận artifact `dist` từ workflow. Không có backend hoặc dữ liệu nhận diện cá nhân.

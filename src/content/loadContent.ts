@@ -1,4 +1,4 @@
-import type { DialogueDefinition, EraDefinition, GameContent, HeritageLocation, QuestDefinition } from '../shared/types/content';
+import type { DialogueDefinition, EraDefinition, GameContent, GeographicMap, HeritageLocation, QuestDefinition } from '../shared/types/content';
 import { validateContent } from '../shared/validation/contentValidation';
 
 async function loadJson<T>(name: string): Promise<T> {
@@ -8,11 +8,12 @@ async function loadJson<T>(name: string): Promise<T> {
 }
 
 export async function loadContent(): Promise<GameContent> {
-  const [locations, eras, dialogues, quests] = await Promise.all([
+  const [locations, eras, dialogues, quests, map] = await Promise.all([
     loadJson<HeritageLocation[]>('locations'),
     loadJson<EraDefinition[]>('eras'),
     loadJson<DialogueDefinition[]>('dialogues'),
     loadJson<QuestDefinition[]>('quests'),
+    loadJson<GeographicMap>('geographic-map'),
   ]);
-  return validateContent({ locations, eras, dialogues, quests });
+  return validateContent({ locations, eras, dialogues, quests, map });
 }

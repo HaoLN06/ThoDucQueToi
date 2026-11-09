@@ -3,12 +3,13 @@ import { chromium, devices } from '@playwright/test';
 const baseUrl = 'http://127.0.0.1:4173/ThoDucQueToi/';
 const saveKey = 'tho-duc-time-journey:save';
 const demoSave = {
-  schemaVersion: 1,
-  player: { mapId: 'placeholder_village', x: 430, y: 270 },
+  schemaVersion: 2,
+  player: { mapId: 'tho_duc_geographic_v1', x: 650, y: 1040 },
   activeEra: 'present',
   quest: { guideSpoken: true, visitedLocations: ['den_can_vang'], portalUsed: false, completed: false },
   discoveredLocations: ['den_can_vang'],
   started: true,
+  navigationTarget: 'den_can_vang',
 };
 
 const browser = await chromium.launch();

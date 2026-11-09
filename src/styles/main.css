@@ -61,6 +61,19 @@ button { min-height: 46px; border-radius: 999px; padding: .75rem 1.2rem; backgro
 .icon-button { min-height: auto; border-radius: 12px; padding: .65rem 1rem; background: rgba(255,247,229,.94); color: var(--green); }
 .icon-button span { display: inline-grid; place-items: center; min-width: 25px; aspect-ratio: 1; margin-left: .35rem; color: white; background: var(--red); border-radius: 50%; font-size: .72rem; }
 .map-disclaimer { position: absolute; z-index: 25; left: 50%; top: 86px; transform: translateX(-50%); max-width: calc(100% - 2rem); padding: .4rem .8rem; border-radius: 8px; background: rgba(255,247,229,.91); color: #6d453a; font-size: .73rem; font-weight: 700; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,.12); }
+.map-panel { position: absolute; z-index: 27; right: 1rem; bottom: 1rem; width: 280px; padding: .8rem; border-radius: 16px; background: rgba(255,247,229,.96); box-shadow: 0 12px 35px rgba(24,57,47,.25); color: var(--green); }
+.map-toggle { display: none; width: 100%; min-height: 40px; border-radius: 10px; padding: .45rem .7rem; }
+.map-content { display: grid; gap: .55rem; }
+.map-title { display: flex; justify-content: space-between; align-items: end; }
+.map-title strong { letter-spacing: .08em; }.map-title small { font-size: .62rem; color: #667169; }
+.map-panel svg { display: block; width: 100%; height: 150px; border: 1px solid #a7b294; border-radius: 9px; background: #c8dcae; }
+.mini-ground { fill: #c8dcae; }.mini-water { fill: none; stroke: #4e9eac; stroke-width: 22; }.mini-road { fill: none; stroke: #c2ab7f; stroke-width: 15; }.mini-path { fill: none; stroke: #f0dfad; stroke-width: 8; stroke-dasharray: 12 8; }
+.mini-heritage { fill: #9d4b55; stroke: #fff7e5; stroke-width: 10; }.mini-heritage.target { fill: #e5a83b; stroke: #713d43; }.mini-player { fill: #173b33; stroke: white; stroke-width: 10; }.mini-route { stroke: #713d43; stroke-width: 8; stroke-dasharray: 20 14; }
+.map-legend { display: flex; flex-wrap: wrap; gap: .35rem .6rem; font-size: .58rem; color: #52645b; }
+.map-legend span { display: flex; gap: .25rem; align-items: center; }.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }.dot.player { background: #173b33; }.dot.heritage { background: #9d4b55; }.line.road { width: 14px; height: 3px; display: inline-block; background: #b79d6b; }
+.map-targets { display: grid; grid-template-columns: repeat(3, 1fr); gap: .3rem; }.map-targets small { grid-column: 1 / -1; font-size: .58rem; font-weight: 800; }.map-targets button { min-height: 34px; padding: .3rem; border-radius: 7px; font-size: .58rem; background: #e5e3cc; color: var(--green); box-shadow: none; }.map-targets button.active { background: var(--red); color: white; }
+.destination { display: flex; align-items: center; gap: .5rem; padding: .45rem; border-radius: 8px; background: #eee2bf; }.destination span:last-child { display: grid; }.destination small { font-size: .62rem; }.direction-arrow { display: inline-block; font-size: 1.4rem; color: var(--red); }
+.map-quality { margin: 0; font-size: .6rem; line-height: 1.35; color: #755040; }.attribution { font-size: .55rem; color: #657068; }
 .quest-card { position: absolute; z-index: 25; top: 105px; left: 1rem; width: 250px; padding: 1rem; border-radius: 15px; background: rgba(255,247,229,.94); box-shadow: 0 10px 30px rgba(24,57,47,.18); border-left: 5px solid var(--red); }
 .quest-card small { display: block; color: #a3543d; font-size: .64rem; font-weight: 800; letter-spacing: .08em; }
 .quest-card strong { display: block; margin: .35rem 0 .65rem; font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif; }
@@ -109,6 +122,12 @@ button { min-height: 46px; border-radius: 999px; padding: .75rem 1.2rem; backgro
   .timeline-button { top: 92px; right: .6rem; min-height: 42px; padding: .55rem .7rem; }
   .timeline-button span { display: none; }
   .map-disclaimer { top: auto; bottom: 164px; font-size: .62rem; }
+  .map-panel { right: .6rem; bottom: 210px; width: 132px; padding: .35rem; background: transparent; box-shadow: none; }
+  .map-toggle { display: block; background: rgba(24,57,47,.94); }
+  .map-panel .map-content { display: none; }
+  .map-panel.expanded { left: .6rem; right: .6rem; bottom: 7.4rem; width: auto; padding: .7rem; background: rgba(255,247,229,.98); box-shadow: 0 12px 35px rgba(24,57,47,.32); }
+  .map-panel.expanded .map-content { display: grid; }.map-panel.expanded .map-toggle { margin-bottom: .5rem; }
+  .map-panel.expanded svg { height: min(32vh, 210px); }
   .game-header { padding-left: .55rem; padding-right: .55rem; }
   .brand-mark { padding: .55rem .65rem; }.brand-mark small { display: none; }
   .status-pill { display: none; }

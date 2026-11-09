@@ -33,6 +33,12 @@ export class GameSession {
   updatePlayer(x: number, y: number): void {
     if (!Number.isFinite(x) || !Number.isFinite(y)) return;
     this.state = { ...this.state, player: { ...this.state.player, x, y } };
+    this.events.emit('player', this.state.player);
+  }
+
+  setNavigationTarget(id: LocationId | null): void {
+    this.state = { ...this.state, navigationTarget: id };
+    this.persist();
   }
 
   flushPlayerPosition(): void {

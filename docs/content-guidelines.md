@@ -2,28 +2,23 @@
 
 ## Nguyên tắc
 
-- Không tự suy diễn lịch sử, địa lý, niên đại hoặc kiến trúc.
-- Không biến truyền khẩu thành sự kiện đã được xác minh.
-- Mỗi claim tương lai phải có `sources` chứa ID nguồn đã kiểm tra.
-- Khi thiếu nguồn, dùng mô tả trung lập và trạng thái `placeholder`/`unverified`.
-- Không đặt công trình hiện đại vào cảnh lịch sử nếu chưa có chứng cứ.
+- Không tự suy diễn lịch sử, địa lý, niên đại, kiến trúc hoặc độ chính xác.
+- Mỗi claim phải có nguồn; truyền khẩu và lớp 1077 phải ghi rõ bản chất diễn giải.
+- Raw source bất biến, tách khỏi generated output; không dùng Google imagery hoặc nguồn không rõ giấy phép.
+- Không trình bày khoảng cách minimap như chỉ dẫn đường thực địa.
 
 ## Trạng thái
 
-- `verified`: có bằng chứng đã kiểm tra.
-- `oral_history`: lời kể/truyền thống địa phương, phải ghi rõ bản chất.
-- `interpretive`: diễn giải hoặc phục dựng, không trình bày như sự kiện chắc chắn.
-- `placeholder`: chỉ phục vụ kỹ thuật.
+- `verified`: đã có nguồn đủ mạnh và kiểm tra phù hợp với claim.
+- `provisional`: có nguồn nhưng độ chính xác/đồng nhất đối tượng còn cần xác minh.
 - `unverified`: chưa kiểm tra.
-- `location_unverified`: vị trí cụ thể chưa kiểm tra.
+- `placeholder`: chỉ phục vụ kỹ thuật.
 
-## Nguồn và tài sản
+Ba mốc Sprint 02 là `provisional`: Thông tư 05/2018/TT-BTNMT gọi đây là tọa độ vị trí tương đối và không công bố sai số mét. Riêng “chùa Thọ Đức”/“Chùa Tháp Linh” còn cần xác minh đồng nhất tên.
 
-Không tạo nguồn giả. Ảnh, âm thanh và font chỉ được thêm khi có giấy phép phù hợp và thông tin attribution. Sprint 01 dùng hình học do ứng dụng tự vẽ và không tải asset/runtime CDN.
+## Quy trình cập nhật
 
-## Quy trình bổ sung nội dung
-
-1. Product/historical reviewer cung cấp nguồn và phạm vi claim.
-2. Gán ID nguồn, trạng thái và ghi chú bất định.
-3. Kiểm tra schema và review nội dung.
-4. Chỉ sau đó cập nhật mô tả game-facing và available eras.
+1. Ghi URL, giấy phép, ngày truy cập và phạm vi sử dụng vào manifest nguồn.
+2. Lưu dữ liệu thô, chạy pipeline/validation, review diff generated.
+3. Gán trạng thái và ghi chú bất định trong nội dung game-facing.
+4. Chạy unit/E2E và chỉ nâng trạng thái khi có bằng chứng mới.

@@ -16,5 +16,5 @@ export function GameCanvas({ session }: { session: GameSession }) {
     };
   }, [session]);
 
-  return <div className="game-canvas" ref={hostRef} aria-label="Bản đồ làng minh họa" />;
+  return <div className="game-canvas" ref={hostRef} aria-label="Bản đồ địa lý Thọ Đức" />;
 }
