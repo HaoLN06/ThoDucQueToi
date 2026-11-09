@@ -38,7 +38,7 @@ export class VillageScene extends Phaser.Scene {
 
     const state = this.session.snapshot();
     this.player = this.physics.add.sprite(state.player.x, state.player.y, 'player-down-idle');
-    this.player.setCircle(15, 3, 10).setCollideWorldBounds(true).setDepth(20);
+    this.player.setCircle(15, 3, 10).setCollideWorldBounds(true).setDepth(state.player.y + 12);
     this.cameras.main.startFollow(this.player, true, 0.12, 0.12);
     this.cameras.main.setZoom(window.matchMedia('(max-width: 780px)').matches ? 0.82 : 1.05);
 
@@ -75,7 +75,14 @@ export class VillageScene extends Phaser.Scene {
     }
     if (this.vector.lengthSq() > 0) this.vector.normalize().scale(speed);
     if (this.vector.lengthSq() > 0) this.facing = Math.abs(this.vector.x) > Math.abs(this.vector.y) ? (this.vector.x < 0 ? 'left' : 'right') : (this.vector.y < 0 ? 'up' : 'down');
-    this.player.setVelocity(0, 0).setTexture(`player-${this.facing}-${this.vector.lengthSq() ? 'walk' : 'idle'}`).setDepth(this.player.y + 12);
+    this.player.setVelocity(0, 0).setDepth(this.player.y + 12);
+    if (this.vector.lengthSq() > 0) {
+      const animation = `player-${this.facing}-walk`;
+      if (this.player.anims.currentAnim?.key !== animation) this.player.play(animation);
+    } else {
+      this.player.anims.stop();
+      this.player.setTexture(`player-${this.facing}-idle`);
+    }
     const next = { x: this.player.x + this.vector.x * delta / 1000, y: this.player.y + this.vector.y * delta / 1000 };
     const era = this.session.snapshot().activeEra;
     if (this.vector.lengthSq() > 0 && this.navigation.canMove(this.player, next, era)) this.player.setPosition(next.x, next.y);
@@ -85,12 +92,15 @@ export class VillageScene extends Phaser.Scene {
   }
 
   private createTextures(): void {
-    if (this.textures.exists('player-idle')) return;
+    if (this.textures.exists('player-down-idle')) return;
     const graphics = this.make.graphics({ x: 0, y: 0 }, false);
     (['up', 'down', 'left', 'right'] as const).forEach((direction, index) => {
       const accent = [0xe9b44c, 0xf7f0d5, 0x5c8eb5, 0xb56555][index];
       graphics.clear().fillStyle(0x203f36).fillEllipse(18, 19, 26, 29).fillStyle(0xf2c879).fillCircle(18, 11, 8).fillStyle(accent).fillRoundedRect(7, 23, 22, 18, 6).generateTexture(`player-${direction}-idle`, 36, 44);
-      graphics.clear().fillStyle(0x203f36).fillEllipse(18, 18, 26, 29).fillStyle(0xf2c879).fillCircle(18, 10, 8).fillStyle(accent).fillRoundedRect(7, 22, 22, 18, 6).fillStyle(0x513d31).fillRect(5, 39, 9, 4).fillRect(22, 39, 9, 4).generateTexture(`player-${direction}-walk`, 36, 44);
+      ['a', 'b'].forEach((frame, frameIndex) => {
+        graphics.clear().fillStyle(0x203f36).fillEllipse(18, 18 + frameIndex, 26, 29).fillStyle(0xf2c879).fillCircle(18, 10 + frameIndex, 8).fillStyle(accent).fillRoundedRect(7, 22 + frameIndex, 22, 18, 6).fillStyle(0x513d31).fillRect(frameIndex ? 4 : 7, 39, 9, 4).fillRect(frameIndex ? 23 : 20, 39, 9, 4).generateTexture(`player-${direction}-walk-${frame}`, 36, 44);
+      });
+      this.anims.create({ key: `player-${direction}-walk`, frames: [{ key: `player-${direction}-walk-a` }, { key: `player-${direction}-walk-b` }], frameRate: 7, repeat: -1 });
     });
     graphics.destroy();
   }
@@ -164,7 +174,7 @@ export class VillageScene extends Phaser.Scene {
   }
 
   private createMarker(x: number, y: number, color: number, text: string): Phaser.GameObjects.Container {
-    const marker = this.add.container(x, y).setDepth(5);
+    const marker = this.add.container(x, y).setDepth(y + 14);
     marker.add([this.add.circle(0, 0, 28, 0xfff7e5, .82).setStrokeStyle(4, color), this.add.circle(0, 0, 14, color), this.add.text(0, 37, text, { align: 'center', fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '12px', color: '#173b33', backgroundColor: '#fff7e5', padding: { x: 6, y: 3 }, fontStyle: 'bold' }).setOrigin(.5, 0)]);
     return marker;
   }
