@@ -1,6 +1,6 @@
 import { chromium, devices } from '@playwright/test';
 
-const baseUrl = 'http://127.0.0.1:4173/tho-duc-time-journey/';
+const baseUrl = 'http://127.0.0.1:4173/ThoDucQueToi/';
 const saveKey = 'tho-duc-time-journey:save';
 const demoSave = {
   schemaVersion: 1,

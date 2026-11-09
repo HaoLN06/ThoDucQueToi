@@ -135,7 +135,7 @@ export class VillageScene extends Phaser.Scene {
   private createObstacles(): void {
     this.obstacles = this.physics.add.staticGroup();
     const building = this.add.rectangle(300, 155, 170, 115, 0x8b4d36).setStrokeStyle(8, 0xe6c07a).setDepth(2);
-    this.add.text(300, 155, 'NHÀ MINH HỌA', { fontFamily: 'sans-serif', fontSize: '15px', color: '#fff7e5', fontStyle: 'bold' }).setOrigin(0.5).setDepth(3);
+    this.add.text(300, 155, 'NHÀ MINH HỌA', { fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '15px', color: '#fff7e5', fontStyle: 'bold' }).setOrigin(0.5).setDepth(3);
     const pond = this.add.ellipse(945, 590, 190, 105, 0x5e9fa1).setStrokeStyle(5, 0x316d72).setDepth(1);
     this.obstacles.add(building);
     this.obstacles.add(pond);
@@ -160,7 +160,7 @@ export class VillageScene extends Phaser.Scene {
     const portal = this.add.container(1020, 400).setDepth(6);
     const outer = this.add.circle(0, 0, 48, 0x39516f, 0.45).setStrokeStyle(7, 0xe6b34a);
     const inner = this.add.circle(0, 0, 27, 0x7d4e8f, 0.7);
-    const label = this.add.text(0, 63, 'CỔNG THỜI GIAN', { fontFamily: 'sans-serif', fontSize: '14px', color: '#173b33', backgroundColor: '#fff7e5', padding: { x: 7, y: 4 }, fontStyle: 'bold' }).setOrigin(0.5);
+    const label = this.add.text(0, 63, 'CỔNG THỜI GIAN', { fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '14px', color: '#173b33', backgroundColor: '#fff7e5', padding: { x: 7, y: 4 }, fontStyle: 'bold' }).setOrigin(0.5);
     portal.add([outer, inner, label]);
     this.tweens.add({ targets: inner, scale: 1.2, alpha: 0.35, duration: 1000, yoyo: true, repeat: -1 });
     this.targetPoints.push({ x: 1020, y: 400, target: { type: 'portal', unlocked: false }, visual: portal });
@@ -171,7 +171,7 @@ export class VillageScene extends Phaser.Scene {
     const halo = this.add.circle(0, 0, 29, 0xffffff, 0.65).setStrokeStyle(3, color);
     const pin = this.add.circle(0, 0, 17, color);
     const label = this.add.text(0, 41, labelText, {
-      align: 'center', fontFamily: 'sans-serif', fontSize: '13px', color: '#173b33', backgroundColor: '#fff7e5', padding: { x: 6, y: 3 }, fontStyle: 'bold',
+      align: 'center', fontFamily: '"Be Vietnam Pro", sans-serif', fontSize: '13px', color: '#173b33', backgroundColor: '#fff7e5', padding: { x: 6, y: 3 }, fontStyle: 'bold',
     }).setOrigin(0.5, 0);
     marker.add([halo, pin, label]);
     return marker;

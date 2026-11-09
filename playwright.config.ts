@@ -6,10 +6,10 @@ export default defineConfig({
   workers: 2,
   retries: process.env.CI ? 2 : 0,
   reporter: [['html', { open: 'never' }], ['list']],
-  use: { baseURL: 'http://127.0.0.1:4173/tho-duc-time-journey/', trace: 'on-first-retry' },
+  use: { baseURL: 'http://127.0.0.1:4173/ThoDucQueToi/', trace: 'on-first-retry' },
   webServer: {
     command: 'npm run build && npm run preview -- --port 4173',
-    url: 'http://127.0.0.1:4173/tho-duc-time-journey/',
+    url: 'http://127.0.0.1:4173/ThoDucQueToi/',
     reuseExistingServer: !process.env.CI,
   },
   projects: [

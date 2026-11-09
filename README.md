@@ -29,7 +29,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-`test:e2e` build bản production, phục vụ dưới subpath `/tho-duc-time-journey/` và chạy trên cấu hình desktop lẫn mobile Chromium.
+`test:e2e` build bản production, phục vụ dưới subpath `/ThoDucQueToi/` và chạy trên cấu hình desktop lẫn mobile Chromium.
 
 ## Điều khiển
 
@@ -54,7 +54,7 @@ npm run build
 npm run preview
 ```
 
-Vite build vào `dist/` với base path `/tho-duc-time-journey/`. Workflow `.github/workflows/deploy.yml` build và triển khai artifact lên GitHub Pages khi push vào `main`. Trong repository GitHub, bật **Settings → Pages → Source: GitHub Actions**.
+Vite build vào `dist/` với base path `/ThoDucQueToi/`. Workflow `.github/workflows/deploy.yml` build và triển khai artifact lên GitHub Pages khi push vào `main`. Trong repository GitHub, bật **Settings → Pages → Source: GitHub Actions**.
 
 ## Giới hạn Sprint 01
 

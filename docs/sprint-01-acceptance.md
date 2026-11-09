@@ -9,7 +9,7 @@ Ngày kiểm tra: 2026-11-09
 - `npm run lint`: pass.
 - `npm run test`: pass, 4 files / 10 unit tests.
 - `npm run build`: pass với Vite 8.3.6; artifact production được tạo trong `dist/`.
-- `npm run test:e2e`: pass, 6/6 smoke tests trên desktop Chromium và cấu hình Pixel 7, phục vụ từ `/tho-duc-time-journey/`.
+- `npm run test:e2e`: pass, 6/6 smoke tests trên desktop Chromium và cấu hình Pixel 7, phục vụ từ `/ThoDucQueToi/`.
 - `npm run screenshots`: pass; ảnh nằm trong `docs/screenshots/`.
 
 Build có cảnh báo bundle chính khoảng 1.44 MB (gzip khoảng 395 KB), phần lớn do Phaser. Đây không phải lỗi build nhưng là đầu việc tối ưu code splitting cho sprint sau.

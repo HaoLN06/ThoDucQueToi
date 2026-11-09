@@ -1,5 +1,5 @@
 :root {
-  font-family: 'Segoe UI', Arial, system-ui, sans-serif;
+  font-family: 'Be Vietnam Pro', 'Segoe UI', Arial, system-ui, sans-serif;
   color: #18392f;
   background: #e9ead7;
   font-synthesis: none;
@@ -18,7 +18,7 @@ button:focus-visible { outline: 4px solid #f4bf58; outline-offset: 3px; }
   min-height: 100%; display: grid; place-content: center; justify-items: center; text-align: center;
   padding: 2rem; background: radial-gradient(circle at 50% 30%, #fff9df, #c8d9b7); color: var(--green);
 }
-.loading-screen h1, .fatal-error h1 { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2rem, 6vw, 4rem); margin: 1rem 0 .25rem; }
+.loading-screen h1, .fatal-error h1 { font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif; font-size: clamp(2rem, 6vw, 4rem); margin: 1rem 0 .25rem; }
 .loading-screen p, .fatal-error p { max-width: 35rem; line-height: 1.7; }
 .loader { width: 54px; aspect-ratio: 1; border: 6px solid #fff9df; border-top-color: var(--gold); border-radius: 50%; animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -30,12 +30,12 @@ button:focus-visible { outline: 4px solid #f4bf58; outline-offset: 3px; }
 .mount { position: absolute; bottom: 31%; width: 70%; height: 40%; background: #63805b; clip-path: polygon(0 100%, 20% 42%, 34% 70%, 53% 18%, 73% 66%, 85% 40%, 100% 100%); }
 .mountain-a { left: -8%; opacity: .65; }
 .mountain-b { right: -8%; transform: scaleX(-1); background: #3f654f; }
-.gate { position: absolute; right: 8%; top: 16%; width: 180px; height: 240px; border: 24px solid #8f3f4f; border-bottom: 0; color: #ffe2a3; font-family: serif; font-size: 4rem; display: grid; place-items: center; opacity: .92; filter: drop-shadow(0 14px 0 rgba(81,54,34,.25)); }
+.gate { position: absolute; right: 8%; top: 16%; width: 180px; height: 240px; border: 24px solid #8f3f4f; border-bottom: 0; color: #ffe2a3; font-family: 'Be Vietnam Pro', sans-serif; font-size: 4rem; display: grid; place-items: center; opacity: .92; filter: drop-shadow(0 14px 0 rgba(81,54,34,.25)); }
 .gate::before { content: ''; position: absolute; top: -46px; left: -50px; right: -50px; height: 25px; border-radius: 4px; background: #8f3f4f; box-shadow: 0 13px 0 #b45c56; }
 
 .start-card { z-index: 2; width: min(580px, calc(100% - 2rem)); padding: clamp(1.5rem, 4vw, 3.5rem); border: 1px solid rgba(255,255,255,.7); border-radius: 28px; background: rgba(255,247,229,.91); box-shadow: 0 28px 80px rgba(30,54,36,.24); backdrop-filter: blur(10px); text-align: center; }
 .eyebrow { color: #9c543c; font-size: .73rem; letter-spacing: .13em; text-transform: uppercase; font-weight: 800; }
-.start-card h1 { margin: .55rem 0 1rem; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: clamp(2.7rem, 7vw, 5.2rem); line-height: .86; color: var(--green); }
+.start-card h1 { margin: .55rem 0 1rem; font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif; font-weight: 800; font-size: clamp(2.7rem, 7vw, 5.2rem); line-height: .92; color: var(--green); }
 .start-card h1 span { color: var(--red); font-size: .55em; letter-spacing: .04em; }
 .start-card p { margin: 0 auto 1.5rem; max-width: 31rem; line-height: 1.7; color: #456058; }
 .start-card small { display: block; margin-top: 1.3rem; color: #6b7064; line-height: 1.5; }
@@ -63,7 +63,7 @@ button { min-height: 46px; border-radius: 999px; padding: .75rem 1.2rem; backgro
 .map-disclaimer { position: absolute; z-index: 25; left: 50%; top: 86px; transform: translateX(-50%); max-width: calc(100% - 2rem); padding: .4rem .8rem; border-radius: 8px; background: rgba(255,247,229,.91); color: #6d453a; font-size: .73rem; font-weight: 700; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,.12); }
 .quest-card { position: absolute; z-index: 25; top: 105px; left: 1rem; width: 250px; padding: 1rem; border-radius: 15px; background: rgba(255,247,229,.94); box-shadow: 0 10px 30px rgba(24,57,47,.18); border-left: 5px solid var(--red); }
 .quest-card small { display: block; color: #a3543d; font-size: .64rem; font-weight: 800; letter-spacing: .08em; }
-.quest-card strong { display: block; margin: .35rem 0 .65rem; font-family: Georgia, serif; }
+.quest-card strong { display: block; margin: .35rem 0 .65rem; font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif; }
 .quest-card p { margin: .5rem 0 0; font-size: .75rem; color: #52655d; }
 .progress-track { height: 7px; border-radius: 999px; background: #d8d8c2; overflow: hidden; }
 .progress-track span { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--red)); transition: width .3s; }
@@ -83,7 +83,7 @@ button { min-height: 46px; border-radius: 999px; padding: .75rem 1.2rem; backgro
 
 .modal-backdrop { position: fixed; z-index: 100; inset: 0; display: grid; place-items: center; padding: 1rem; background: rgba(11,30,25,.68); backdrop-filter: blur(5px); overflow-y: auto; }
 .modal { width: min(570px, 100%); max-height: calc(100vh - 2rem); overflow-y: auto; padding: clamp(1.25rem, 4vw, 2.5rem); border: 2px solid rgba(255,255,255,.7); border-radius: 22px; background: var(--cream); box-shadow: 0 30px 80px rgba(0,0,0,.38); }
-.modal h2 { margin: .4rem 0 .8rem; font-family: Georgia, 'Times New Roman', serif; color: var(--green); font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 400; }
+.modal h2 { margin: .4rem 0 .8rem; font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif; color: var(--green); font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 700; }
 .modal p, .modal li { line-height: 1.65; }
 .modal-actions { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.5rem; }
 .modal-actions.spread { justify-content: space-between; }
