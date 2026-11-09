@@ -1,0 +1,13 @@
+[
+  {
+    "id": "guide_intro",
+    "npcId": "story_guide",
+    "fictional": true,
+    "questTrigger": "guide_spoken",
+    "steps": [
+      { "speaker": "Người dẫn chuyện", "text": "Chào bạn! Tôi là nhân vật hư cấu đồng hành trong bản demo này." },
+      { "speaker": "Người dẫn chuyện", "text": "Hãy ghé thăm ba điểm đánh dấu. Mọi vị trí trên bản đồ đều chỉ là minh họa kỹ thuật." },
+      { "speaker": "Người dẫn chuyện", "text": "Khi đã khám phá đủ, cổng thời gian sẽ mở để bạn xem một không gian tái hiện minh họa." }
+    ]
+  }
+]

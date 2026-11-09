@@ -1,0 +1,35 @@
+[
+  {
+    "id": "dinh_tho_duc",
+    "name": "Đình Thọ Đức",
+    "category": "communal_house",
+    "categoryLabel": "Đình làng",
+    "verification": { "status": "location_unverified", "sources": [], "note": "Vị trí, kiến trúc và thông tin lịch sử cần được kiểm chứng." },
+    "geography": { "lat": null, "lng": null },
+    "world": { "mapId": "placeholder_village", "x": 430, "y": 220, "positionType": "placeholder" },
+    "availableEras": ["present"],
+    "description": "Điểm khám phá di sản trong bản demo kỹ thuật. Nội dung lịch sử chưa được cung cấp."
+  },
+  {
+    "id": "den_can_vang",
+    "name": "Đền Can Vang",
+    "category": "temple",
+    "categoryLabel": "Đền",
+    "verification": { "status": "location_unverified", "sources": [], "note": "Vị trí, kiến trúc và thông tin lịch sử cần được kiểm chứng." },
+    "geography": { "lat": null, "lng": null },
+    "world": { "mapId": "placeholder_village", "x": 790, "y": 250, "positionType": "placeholder" },
+    "availableEras": ["present"],
+    "description": "Điểm khám phá di sản trong bản demo kỹ thuật. Nội dung lịch sử chưa được cung cấp."
+  },
+  {
+    "id": "chua_thap_linh",
+    "name": "Chùa Tháp Linh",
+    "category": "pagoda",
+    "categoryLabel": "Chùa",
+    "verification": { "status": "location_unverified", "sources": [], "note": "Vị trí, kiến trúc và thông tin lịch sử cần được kiểm chứng." },
+    "geography": { "lat": null, "lng": null },
+    "world": { "mapId": "placeholder_village", "x": 620, "y": 610, "positionType": "placeholder" },
+    "availableEras": ["present"],
+    "description": "Điểm khám phá di sản trong bản demo kỹ thuật. Nội dung lịch sử chưa được cung cấp."
+  }
+]

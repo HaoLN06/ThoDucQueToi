@@ -1,0 +1,15 @@
+[
+  {
+    "id": "first_memories",
+    "title": "Những dấu ấn đầu tiên",
+    "description": "Khám phá ba địa điểm minh họa và mở cổng thời gian.",
+    "objectives": [
+      { "id": "talk_guide", "label": "Trò chuyện với Người dẫn chuyện" },
+      { "id": "visit_dinh_tho_duc", "label": "Khám phá Đình Thọ Đức" },
+      { "id": "visit_den_can_vang", "label": "Khám phá Đền Can Vang" },
+      { "id": "visit_chua_thap_linh", "label": "Khám phá Chùa Tháp Linh" },
+      { "id": "use_portal", "label": "Mở khóa và sử dụng cổng thời gian" },
+      { "id": "complete", "label": "Hoàn thành hành trình đầu tiên" }
+    ]
+  }
+]

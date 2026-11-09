@@ -1,0 +1,7 @@
+[
+  { "id": "present", "label": "Hiện tại", "enabled": true, "description": "Môi trường minh họa đương đại." },
+  { "id": "ly_1077", "label": "Năm 1077 (tái hiện minh họa)", "enabled": true, "description": "Không gian diễn giải phục vụ demo, không khẳng định địa hình hay kiến trúc lịch sử." },
+  { "id": "le", "label": "Thời Lê", "enabled": false, "description": "Chưa mở trong Sprint 01." },
+  { "id": "nguyen_1845", "label": "Năm 1845", "enabled": false, "description": "Chưa mở trong Sprint 01." },
+  { "id": "twentieth_century", "label": "Thế kỷ XX", "enabled": false, "description": "Chưa mở trong Sprint 01." }
+]
